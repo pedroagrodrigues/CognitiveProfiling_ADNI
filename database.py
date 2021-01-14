@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import json
 
-credentials = json.load(open("user.json"))
+credentials = json.load(open("credentials.json"))
 collectionName = "ADNI"
 tableName="ADNIMERGE"
 

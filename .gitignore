@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 .vscode/settings.json
 ProfilingEnv/*
+credentials.json
+dataset.csv
+dataset.pickle
