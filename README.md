@@ -1,2 +1,3 @@
 # CognitiveProfiling_ADNI
-This repository will hold the code for profiling subjects within the ADNI study
+This repository was created to upload the code that is being developed for profiling patients from ADNI trough machine learning.
+
