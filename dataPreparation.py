@@ -24,30 +24,44 @@ def getUniqueCategories(data):
             unique = len(data[col].unique())
             print(f"Feature \033[33m '{col}' \033[0m has \033[33m {unique} \033[0m unique categories")
 
+#### Target data setup:
+### Fixing Labels
+# Some of the subjects were between diagnosis. 
+# Since they seem to be changing between two of 
+# them, I've decided to consider the target of 
+# this change, example if the diagnosis was MCI to 
+# Dementia the model will treat this subject as Dementia.
+# The alternative to this was to remove this row or to 
+# create a new target like "other" 
 
-# Target setup
-targetLabel = 'DX'
-
-# Some of the labels are inbetween values, since they are too 
-# few and may disturb the mode, I've consider them to be the transition target. 
-# Alternative was to remove these rows. 
-# # These values are changed as it follows:
 # 'MCI to Dementia' -> 'Dementia'  (284)
 # 'NL to MCI'       -> 'MCI'       (76)
 # 'MCI to NL'       -> 'NL'        (57)
 # 'Dementia to MCI' -> 'MCI'       (6)
 # 'NL to Dementia'  -> 'Dementia'  (3)
 
-# X['native_country'] = ['United-States ' if x == 'United-States' else 'Other' for x in X['native_country']]
+# Also labels must be converted to a numeric value corresponding to their number
+# 'NA'       -> 0
+# 'MCI'      -> 1
+# 'NL'       -> 2
+# 'Dementia' -> 3
+###
+targetLabel = 'DX'
 
-data[targetLabel] = ['Dementia' if value == 'MCI to Dementia' or value == 'NL to Dementia' else value for value in data[targetLabel]]
-data[targetLabel] = ['MCI' if value == 'NL to MCI' or value == 'Dementia to MCI' else value for value in data[targetLabel]]
-data[targetLabel] = ['NL' if value == 'MCI to NL' else value for value in data[targetLabel]]
+data[targetLabel] = [ 3 if value == 'MCI to Dementia' or value == 'NL to Dementia' or value == 'Dementia' else value for value in data[targetLabel]]
+data[targetLabel] = [ 1 if value == 'NL to MCI' or value == 'Dementia to MCI' or value == 'MCI' else value for value in data[targetLabel]]
+data[targetLabel] = [ 2 if value == 'MCI to NL' or value == 'NL' else value for value in data[targetLabel]]
+data[targetLabel] = [ 0 if value == 'NA' else value for value in data[targetLabel]]
 
+# X is the data, y is the target or value corresponding to this data
 x = data.drop(targetLabel, 1)
 y = data[targetLabel]
 
-print(y.value_counts())
+#Same process is applied to DX_bl
+
+
+
+print(x['DX_bl'].value_counts())
 
 # for i in x:
 #     print (f"Categories for \033[33m '{i}' \033[0m category")

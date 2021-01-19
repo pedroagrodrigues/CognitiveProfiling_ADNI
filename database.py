@@ -3,7 +3,7 @@ import json
 
 credentials = json.load(open("credentials.json"))
 collectionName = "ADNI"
-tableName="ADNIMERGE"
+tableName="ADNI_TQ1"
 
 def dbConnect(collection=collectionName, table=tableName, path='localhost', port=27017, loginData=credentials):
     if 'user' not in loginData or 'password' not in loginData: 
@@ -36,64 +36,6 @@ def getColumn(column):
     except Exception as error:
         print("Something went wrong: " + repr(error))
 
-
-# client = dbConnect()
-# collection = client.ADNI.ADNIMERGE
-    
-
-# print("===============   ADNI 1   ===============")
-# print("Subjects of ADNI 1: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI1"})))
-# print("Subjects in normal controls: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI1", "DX_bl": "CN"})))
-# print("Subjects with  SMC: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI1", "DX_bl": "SMC"})))
-# print("Subjects with EMCI: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI1", "DX_bl": "EMCI"})))
-# print("Subjects with LMCI: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI1", "DX_bl": "LMCI"})))
-# print("Subjects with AD: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI1", "DX_bl": "AD"})), "\n")
-
-# print("===============   ADNI 2   ===============")
-# print("Subjects of ADNI 2: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI2"})))
-# print("Subjects in normal controls: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI2", "DX_bl": "CN"})))
-# print("Subjects with  SMC: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI2", "DX_bl": "SMC"})))
-# print("Subjects with EMCI: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI2", "DX_bl": "EMCI"})))
-# print("Subjects with LMCI: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI2", "DX_bl": "LMCI"})))
-# print("Subjects with AD: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI2", "DX_bl": "AD"})), "\n")
-
-
-
-# print("===============   ADNI 3   ===============")
-# print("Subjects of ADNI 3: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI3"})))
-# print("Subjects in normal controls: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI3", "DX_bl": "CN"})))
-# print("Subjects with  SMC: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI3", "DX_bl": "SMC"})))
-# print("Subjects with EMCI: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI3", "DX_bl": "EMCI"})))
-# print("Subjects with LMCI: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI3", "DX_bl": "LMCI"})))
-# print("Subjects with AD: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI3", "DX_bl": "AD"})), "\n")
-
-# print("===============   ADNI GO   ===============")
-# print("Subjects of ADNI GO: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNIGO"})))
-# print("Subjects in normal controls: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNIGO", "DX_bl": "CN"})))
-# print("Subjects with MCI: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNIGO", "DX_bl": "LMCI"})))
-# print("Subjects with AD: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNIGO", "DX_bl": "AD"})), "\n")
-
-    
-
-# print("Subjects of ADNI 1: ", len(collection.distinct("PTID",{"ORIGPROT" : "ADNI1"})))
-#     data = collection.distinct("PTID",{"ORIGPROT" : "ADNI1"})
-#     data = [eval(x) for x in data]
-#     data.sort()
-#     print (len(data))
-#     # for i in data:
-#     #     print(i)
-#     #     input()
-
-
-
-#     collection = client.ADNI.ADNI1
-#     data = collection.distinct("PTID")
-#     print(f"ADNI solto: {len(data)}")
-
-
-        
-# except Exception as error:
-#     print("Something went wrong: ", error)
 
 
 
