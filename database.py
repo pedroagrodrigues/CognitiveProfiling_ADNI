@@ -37,8 +37,8 @@ def getColumn(column):
         print("Something went wrong: " + repr(error))
 
 
-client = dbConnect()
-collection = client.ADNI.ADNIMERGE
+# client = dbConnect()
+# collection = client.ADNI.ADNIMERGE
     
 
 # print("===============   ADNI 1   ===============")
