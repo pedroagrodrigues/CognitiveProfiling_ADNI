@@ -1,21 +1,26 @@
 import numpy as np
 import pandas as panda
-
+import json
 # Load data from database:
-from database import getLabels, getColumn
+from Database import Database
 
+path = './dataFiles/ADNI_MERGE'
 
 try:
-    data = panda.read_pickle('dataset.pickle')
+    data = panda.read_pickle(path+'.pickle')
 except:
+    credentials = json.load(open("credentials.json"))
+
+    db = Database('ADNI', 'ADNIMERGE', credentials['user'], credentials['password'])
+
     labelsToRemove = ['_id', 'RID', 'PTID', 'SITE', 'COLPROT', 'ORIGPROT', 'PRID', 'EXAMDATE', 'EXAMDATE_bl', 'Years_bl', 'Month_bl', 'Month', 'M']
     # this field is the object id generated from MongoDB, we dont need it.
-    labels = [label for label in getLabels() if label not in labelsToRemove]
+    labels = [label for label in db.getLabels() if label not in labelsToRemove]
 
     # Saving into a file just to increase performance while debugging.
-    data = panda.DataFrame({label : getColumn(label) for label in labels})
-    data.to_pickle('dataset.pickle')
-    data.to_csv('dataset.csv') #easier to see
+    data = panda.DataFrame({label : db.getColumn(label) for label in labels})
+    data.to_pickle(path+'.pickle')
+    data.to_csv(path+'.csv') #easier to see
 
 #data[targetLabel] = panda.get_dummies(data[targetLabel])
 def getUniqueCategories(data):
