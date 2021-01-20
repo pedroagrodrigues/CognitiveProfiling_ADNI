@@ -1,6 +1,3 @@
-import numpy as np
-import pandas as panda
-
 # Load data from database:
 from database import getLabels, getColumn, dbConnect
 
@@ -11,7 +8,7 @@ def getMean(data):
     return round(sum(data)/len(data),1)
 
 def getPercent(data, val):
-    return round(data.count(val)/len(data) * 100,1)
+    return round(data.count(val)/len(data) * 100,0)
 
 
 collection = dbConnect("ADNI","ADNI_TQ1")

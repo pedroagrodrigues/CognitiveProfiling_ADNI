@@ -133,3 +133,4 @@ credentials.json
 dataset.csv
 dataset.pickle
 .vscode/launch.json
+dataFiles/*
