@@ -12,7 +12,11 @@ To know more about this data or the challenge itself, head to this [link](https:
 # Data Confirmation
 Confirming data before proceeding is the best way to see if everything is there and if the selected file is the proper one. On this step, the goal is to see if the data loaded is the same as the challenge states. 
 
-Here I found the first problem, the question one from the challenge states that the file to use is **ADNI_Training_Q3_APOE** then they state that this data has 767 individuals. However, this file only has 628 individuals. I believe this is an error. The proper file is **ADNI_Training_Q1_APOE** which does have the number of individuals stated. Everything seems to be according to the table presented on their [site](https://www.synapse.org/#!Synapse:syn2290704/wiki/64710).
+Here was found the first problem, the question one from the challenge states that the file to use is ADNI_Training_Q3_APOE then they state that this data has 767 individuals. However, this file only has 628 individuals.  The proper file seems to be ADNI_Training_Q1_APOE which does have the number of individuals stated. Everything in this file matches the table present on the [site](https://www.synapse.org/#!Synapse:syn2290704/wiki/64710).
+
+The table representing the second question was empty. For this reason, there is no way to see if this data is right. However, there might be some way to check this in the future. 
+
+The data for the third question also matches the table present on the [site](https://www.synapse.org/#!Synapse:syn2290704/wiki/64710).
 
 # Data PreProcessing
 Data preprocessing is a step that helps to build a model. This technique will transform raw data into an understandable format for the model. Data provided might have some issues like being incomplete, inconsistent, and lacking in certain behaviours or trends and may have some errors. 
