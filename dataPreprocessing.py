@@ -42,7 +42,7 @@ except:
     db = Database('ADNI', 'ADNI_TQ1', credentials['user'], credentials['password'])
 
     labelsToRemove = ['_id', 'RID', 'PTID', 'EXAMDATE']
-    # this field is the object id generated from MongoDB, we dont need it.
+    # this field is the object id generated from MongoDB, we don't need it.
     labels = [label for label in db.getLabels() if label not in labelsToRemove]
 
     # Saving into a file just to increase performance while debugging.
@@ -61,12 +61,59 @@ data['AGE'] = [eval(age) for age in data['AGE']]
 data['PTGENDER'] = [1 if x == 'Male' else 0 for x in data['PTGENDER']]
 data['APOE4'] = [eval(x) for x in data['APOE4']]
 data['MMSE'] = [eval(x) for x in data['MMSE']]
+data['PTEDUCAT'] = [eval(x) for x in data['PTEDUCAT']]
+data['APOE_Genotype'] = [eval(x) for x in [y.replace(',','.') for y in data['APOE_Genotype']]]
+
+
+print(data.head(5))
+
+
+path = './dataFiles/TQ2'
+
+try:
+    data = panda.read_pickle(path + '.pickle')
+except:
+    credentials = json.load(open("credentials.json"))
+
+    db = Database('ADNI', 'ADNI_TQ2', credentials['user'], credentials['password'])
+
+    labelsToRemove = ['_id', 'RID', 'PTID', 'EXAMDATE']
+    # this field is the object id generated from MongoDB, we don't need it.
+    labels = [label for label in db.getLabels() if label not in labelsToRemove]
+
+    # Saving into a file just to increase performance while debugging.
+    data = panda.DataFrame({label : db.getColumn(label) for label in labels})
+    data.to_pickle(path + '.pickle')
+    data.to_csv(path + '.csv')
+
+data['AGE'] = [eval(x) for x in data['AGE']]
+data['PTGENDER'] = [1 if x == 'Male' else 0 for x in data['PTGENDER']]
+data['PTEDUCAT'] = [eval(x) for x in data['PTEDUCAT']]
+data['APOE4'] = [eval(x) for x in data['APOE4']]
+data['MMSE'] = [eval(x) for x in data['MMSE']]
+data['ABETA'] = [eval(x) for x in data['ABETA']]
+data['SAGE_Q2'] = [eval(x) for x in data['SAGE_Q2']]
 data['APOE_Genotype'] = [eval(x) for x in [y.replace(',','.') for y in data['APOE_Genotype']]]
 
 print(data.head(5))
 
 
-# There are outliers in the data but ignored for the time being
-# print(findOutliersTukey([x for x in data["AGE"]]))
-# print(findOutliersKDE([x for x in data["AGE"]]))
+path = './dataFiles/TQ3'
 
+try:
+    data = panda.read_pickle(path + '.pickle')
+except:
+    credentials = json.load(open("credentials.json"))
+
+    db = Database('ADNI', 'ADNI_TQ3', credentials['user'], credentials['password'])
+
+    labelsToRemove = ['_id', 'directory_id', 'Subject', 'RID']
+    # this field is the object id generated from MongoDB, we don't need it.
+    labels = [label for label in db.getLabels() if label not in labelsToRemove]
+
+    # Saving into a file just to increase performance while debugging.
+    data = panda.DataFrame({label : db.getColumn(label) for label in labels})
+    data.to_pickle(path + '.pickle')
+    data.to_csv(path + '.csv')
+
+print(data.head())
