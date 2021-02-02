@@ -107,7 +107,7 @@ except:
 
     db = Database('ADNI', 'ADNI_TQ3', credentials['user'], credentials['password'])
 
-    labelsToRemove = ['_id', 'directory_id', 'Subject', 'RID']
+    labelsToRemove = ['_id', 'directory_id', 'Subject', 'RID', 'Image_Data_ID', 'Modality', 'Acq_Date', 'EXAMDATE', 'Visit', 'PTETHCAT']
     # this field is the object id generated from MongoDB, we don't need it.
     labels = [label for label in db.getLabels() if label not in labelsToRemove]
 
@@ -116,4 +116,25 @@ except:
     data.to_pickle(path + '.pickle')
     data.to_csv(path + '.csv')
 
+data['DX_bl'] = [0 if value == 'CN' else value for value in data['DX_bl']]
+data['DX_bl'] = [1 if value == 'LMCI' else value for value in data['DX_bl']]
+data['DX_bl'] = [2 if value == 'EMCI' else value for value in data['DX_bl']]
+data['DX_bl'] = [3 if value == 'AD' else value for value in data['DX_bl']]
+data['AGE'] = [eval(x) for x in data['AGE']]
+data['PTGENDER'] = [1 if x == 'Male' else 0 for x in data['PTGENDER']]
+data['PTEDUCAT'] = [eval(x) for x in data['PTEDUCAT']]
+data['PTRACCAT'] = [1 if x == 'White' else 0 for x in data['PTRACCAT']]
+data['APOE4'] = [eval(x) for x in data['APOE4']]
+data['MMSE'] = [eval(x) for x in data['MMSE']]
+data['imputed_genotype'] = [1 if x == "TRUE" else 0 for x in data['imputed_genotype']]
+data['APOE Genotype'] = [eval(x) for x in [y.replace(',','.') for y in data['APOE Genotype']]]
+
+data['Dx_code'] = [0 if value == 'CN' else value for value in data['Dx_code']]
+data['Dx_code'] = [1 if value == 'LMCI' else value for value in data['Dx_code']]
+data['Dx_code'] = [2 if value == 'EMCI' else value for value in data['Dx_code']]
+data['Dx_code'] = [3 if value == 'AD' else value for value in data['Dx_code']]
+data['Dx_code'] = [4 if value == 'MCI' else value for value in data['Dx_code']]
+
+
 print(data.head())
+# print(data['Dx_code'].value_counts())
