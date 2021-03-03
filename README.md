@@ -26,7 +26,62 @@ The preprocessing task requires some libraries:
 - Pandas
 
 
-Starting from the file **ADNI_Training_Q1_APOE_July22.2014** 
+## Treating the Neuroassessment Data Files:
+As stated before the first goal here is to convert data from each neuro-cognitive assessments into an understandable format for the programming language. In other words, the goal here is to convert text or objects into numeric values or boolean, depending on what we find. 
+
+### MoCA - Montreal Cognitive Assessment
+According to [this](https://www.mocatest.org/the-moca-test/) source:
+
+The MoCA Test was validated in the setting of mild cognitive impairment (MCI), and has been subsequently adopted in numerous clinical settings. The sensivity of the MoCA for detecting MCI is 90%, compared to 18% for other leading cognitive screening tools such as the MMSE.
+
+The dataset we have for this assessment has 52 columns with a total of 6895 rows. 
+
+All fields were coming from the data base as an object, and they had to be converted. 
+
+The conversion done is:
+* Phase: This dataset has 4 phases:
+    * ADNI1  -> 1
+    * ADNI2  -> 2
+    * ADNI3  -> 3
+    * ADNIGO -> 4
 
 
+ID       -> int
 
+RID      -> int
+
+SITEID   -> int
+
+VISCODE  -> Column Removed the next field represents the same, but with translation
+
+VISCODE2 -> int
+ * bl    ->  0
+ * m06   ->  6
+ * m12   ->  12
+ * m24   ->  24
+ * m36   ->  36
+ * m48   ->  48
+ * m60   ->  60
+ * m72   ->  72
+ * m84   ->  84
+ * m96   ->  96
+ * m108  ->  108
+ * m120  ->  120
+ * m132  ->  132
+ * m144  ->  144
+ * m156  ->  156
+ * m168  ->  168
+ * m180  ->  180
+ * blank ->  Row removed
+
+USERDATE  -> Column removed 
+
+USERDATE2 -> Column removed
+
+update_stamp -> Column removed
+
+Now the values for the test it self for each field blank values got their row removed the rest of the values were converted to int:
+
+TRAILS, CUBE
+
+The field LETTERS represents the number of errors on the given task.
