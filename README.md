@@ -80,8 +80,43 @@ USERDATE2 -> Column removed
 
 update_stamp -> Column removed
 
+The last column was "MOCA" and the blank fields were calculated and normalized from 0-30 to 0-100. 
+ ```Python
+    Normalization = total * 100 / 30 
+ ```
+
+The total was calculated applying some conditions: 
+ * If the sum of all serial fields was higher than 3 it gives 3 points, between 1 and 4 it corresponds to 2 points and 1 correct corresponds to 1 point. 
+
+ * The Del fields a 0 corresponds to 1 point and a 1 to 0 points.
+ * field Letters corresponds to errors, less than 2 errors gives 1 point.
+ * Ffluency grants a point when higher than 10.
+
+
 Now the values for the test it self for each field blank values got their row removed the rest of the values were converted to int:
 
 TRAILS, CUBE
 
 The field LETTERS represents the number of errors on the given task.
+
+### MMSE - Mini–Mental State Examination
+
+According to [wikipedia](https://en.wikipedia.org/wiki/Mini%E2%80%93Mental_State_Examination)
+MMSE is a 30-point test that is used extensively in clinical research settings to measure cognitive impairment. It is commonly used in medicine and allied health to screen for dementia. It is also used to estimate the severity and progression of cognitive impairment and to follow the course of cognitive changes in an individual over time; thus making it an effective way to document an individual's response to treatment. The MMSE's purpose has been not, on its own, to provide a diagnosis for any particular nosological entity.
+
+The dataset for this assessment has 74 columns with a total of 12163 rows.
+
+The common columns got the same value as the previous test:
+
+* Phase - This dataset has 4 phases:
+    * ADNI1  -> 1
+    * ADNI2  -> 2
+    * ADNI3  -> 3
+    * ADNIGO -> 4
+
+
+ID       -> int
+
+RID      -> int
+
+SITEID   -> int

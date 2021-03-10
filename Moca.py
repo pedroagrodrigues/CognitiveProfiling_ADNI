@@ -26,32 +26,36 @@ class Moca:
             labels = [label for label in db.getLabels() if label not in labelsToRemove]
 
             data = panda.DataFrame({label : db.getColumn(label) for label in labels})
+
+            data['Phase'] = [1 if x == 'ADNI1' else x for x in data['Phase']]
+            data['Phase'] = [2 if x == 'ADNI2' else x for x in data['Phase']]
+            data['Phase'] = [3 if x == 'ADNI3' else x for x in data['Phase']]
+            data['Phase'] = [4 if x == 'ADNIGO' else x for x in data['Phase']]
+            
+            fieldsToInt = ['ID', 'RID', 'SITEID']
+
+            for field in fieldsToInt:
+                data = self.dataToInt(data, field)
+
+            data = data.loc[data['VISCODE2'] != '']
+            data['VISCODE2'] = [int(x.lstrip('m').lstrip('0')) if x != 'bl' else 0 for x in data['VISCODE2']]
+
+            fieldsToClean =  ['TRAILS', 'CUBE', 'CLOCKCON', 'CLOCKNO', 'CLOCKHAN',
+            'LION', 'RHINO', 'CAMEL', 'IMMT1W1', 'IMMT1W2', 'IMMT1W3', 'IMMT1W4',
+            'IMMT1W5', 'IMMT2W1', 'IMMT2W2', 'IMMT2W3', 'IMMT2W4', 'IMMT2W5', 'DIGFOR',
+            'DIGBACK', 'LETTERS', 'SERIAL1', 'SERIAL2', 'SERIAL3', 'SERIAL4',
+            'SERIAL5', 'REPEAT1', 'REPEAT2', 'FFLUENCY', 'ABSTRAN', 'ABSMEAS',
+            'DELW1', 'DELW2', 'DELW3', 'DELW4', 'DELW5', 'DATE', 'MONTH', 'YEAR', 'DAY',
+            'PLACE', 'CITY', 'MOCA']
+
+            for field in fieldsToClean:
+                data = self.dataCleaner(data, field)
+
+            for row in data['ID']:
+                data.loc[data['ID'] == row, 'MOCA'] = self.calculateTotals(data.loc[data['ID'] == row])
+            
             data.to_pickle(self.path + '.pickle')
             data.to_csv(self.path + '.csv')
-
-        data['Phase'] = [1 if x == 'ADNI1' else x for x in data['Phase']]
-        data['Phase'] = [2 if x == 'ADNI2' else x for x in data['Phase']]
-        data['Phase'] = [3 if x == 'ADNI3' else x for x in data['Phase']]
-        data['Phase'] = [4 if x == 'ADNIGO' else x for x in data['Phase']]
-        data['ID'] = [int(x) for x in data['ID']]
-        data['RID'] = [int(x) for x in data['RID']]
-        data['SITEID'] = [int(x) for x in data['SITEID']]
-        data = data.loc[data['VISCODE2'] != '']
-        data['VISCODE2'] = [int(x.lstrip('m').lstrip('0')) if x != 'bl' else 0 for x in data['VISCODE2']]
-
-        fieldsToClean =  ['TRAILS', 'CUBE', 'CLOCKCON', 'CLOCKNO', 'CLOCKHAN',
-        'LION', 'RHINO', 'CAMEL', 'IMMT1W1', 'IMMT1W2', 'IMMT1W3', 'IMMT1W4',
-        'IMMT1W5', 'IMMT2W1', 'IMMT2W2', 'IMMT2W3', 'IMMT2W4', 'IMMT2W5', 'DIGFOR',
-        'DIGBACK', 'LETTERS', 'SERIAL1', 'SERIAL2', 'SERIAL3', 'SERIAL4',
-        'SERIAL5', 'REPEAT1', 'REPEAT2', 'FFLUENCY', 'ABSTRAN', 'ABSMEAS',
-        'DELW1', 'DELW2', 'DELW3', 'DELW4', 'DELW5', 'DATE', 'MONTH', 'YEAR', 'DAY',
-        'PLACE', 'CITY', 'MOCA']
-
-        for field in fieldsToClean:
-            data = self.dataCleaner(data, field)
-
-        for row in data['ID']:
-            data.loc[data['ID'] == row, 'MOCA'] = self.calculateTotals(data.loc[data['ID'] == row])
 
         return data
 
@@ -64,6 +68,9 @@ class Moca:
 
         return data
 
+    def dataToInt(self, data, field):
+        data[field] = [int(x) for x in data[field]]
+        return data
 
     def calculateTotals(self, row):
         dataLabels = ['TRAILS', 'CUBE', 'CLOCKCON', 'CLOCKHAN', 'CLOCKNO', 'LION', 'RHINO',
@@ -89,6 +96,8 @@ class Moca:
         if row["LETTERS"].values[0] < 2: total += 1
         if row["FFLUENCY"].values[0] > 10: total += 1
 
-        return total
+        return round(total * 100 / 30, 2)
 
-x = Moca()
+# x = Moca()
+
+# print(x.data.head(5))
