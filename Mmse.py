@@ -28,8 +28,8 @@ class Mmse:
             # labelsToRemove = ['_id']
             labelsToRemove = ['_id', 'USERDATE', 'USERDATE2', 'update_stamp', 'EXAMDATE', 'MMDATECM',
             'MMYEARCM', 'MMMNTHCM', 'MMDAYCM', 'MMSESNCM', 'MMRECALL', 'MMTRIALS', 'MMHOSPCM', 'MMFLRCM',
-            'MMCITYCM', 'MMAREACM', 'MMSTCM', 'MMTRIALS', 'MMDLTR', 'MMLLTR', 'MMRLTR', 
-            'MMOLTR', 'MMWLTR', 'MMLTR1', 'MMLTR2', 'MMLTR3', 'MMLTR4', 'MMLTR5', 
+            'MMCITYCM', 'MMAREACM', 'MMSTCM', 'MMTRIALS', 'MMDLTR', 'MMLLTR', 'MMRLTR',
+            'MMOLTR', 'MMWLTR', 'MMLTR1', 'MMLTR2', 'MMLTR3', 'MMLTR4', 'MMLTR5',
             'MMLTR6', 'MMLTR7', 'DONE', 'MMLTR1', 'MMLTR2', 'MMLTR3', 'MMLTR4', 'MMLTR5',
             'MMLTR6', 'MMLTR7', 'WORD1', 'WORD1DL', 'WORD2', 'WORD2DL', 'WORD3', 'WORD3DL',
             'WORDLIST', 'WORLDSCORE', 'update_stamp']
@@ -37,7 +37,7 @@ class Mmse:
             labels = [label for label in db.getLabels() if label not in labelsToRemove]
 
             data = panda.DataFrame({label : db.getColumn(label) for label in labels})
-            
+
 
             data['Phase'] = [1 if x == 'ADNI1' else x for x in data['Phase']]
             data['Phase'] = [2 if x == 'ADNI2' else x for x in data['Phase']]
@@ -50,9 +50,9 @@ class Mmse:
 
             fieldsToClean = ['MMDATE', 'MMYEAR',
             'MMMONTH', 'MMDAY', 'MMSEASON', 'MMHOSPIT', 'MMFLOOR', 'MMCITY',
-            'MMAREA', 'MMSTATE', 'MMBALL', 'MMFLAG', 'MMTREE', 'MMBALLDL', 
+            'MMAREA', 'MMSTATE', 'MMBALL', 'MMFLAG', 'MMTREE', 'MMBALLDL',
             'MMFLAGDL', 'MMTREEDL', 'MMWATCH', 'MMPENCIL', 'MMREPEAT', 'MMHAND',
-            'MMFOLD', 'MMONFLR', 'MMREAD', 'MMWRITE', 'MMDRAW', 'MMD', 'MML', 'MMR', 
+            'MMFOLD', 'MMONFLR', 'MMREAD', 'MMWRITE', 'MMDRAW', 'MMD', 'MML', 'MMR',
             'MMO', 'MMW']
 
             for field in fieldsToClean:
@@ -60,10 +60,10 @@ class Mmse:
 
             for row in data['ID']:
                 data.loc[data['ID'] == row, 'MMSCORE'] = self.calculateTotals(data.loc[data['ID'] == row], fieldsToClean)
-            
+
             data.to_pickle(self.path + '.pickle')
             data.to_csv(self.path + '.csv')
-            
+
         return data
 
     def dataToInt(self, data, field):
@@ -82,11 +82,11 @@ class Mmse:
         total = 0
         for i in fields:
             total += row[i].values[0]
-        
+
         return round(total * 100 / 30, 2)
 
 
-x = Mmse()
+# x = Mmse()
 
 # print(x.data.head(5))
 # data['MMSCORE'] = [calcTotal(row, fieldsToClean) for row in data.loc]
