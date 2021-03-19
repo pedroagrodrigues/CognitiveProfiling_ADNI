@@ -11,16 +11,18 @@ path = './dataFiles/MERGE'
 try:
     data = panda.read_pickle(path+'.pickle')
 except:
+    print("No save file found, downloading data...\nThis may take a while.")
     credentials = json.load(open("credentials.json"))
 
     db = Database('ADNI', 'ADNIMERGE', credentials['user'], credentials['password'], credentials['server'])
 
-    labelsToRemove = ['_id', 'PTRACCAT', 'update_stamp']
+    labelsToRemove = ['_id', 'FSVERSION_bl', 'update_stamp']
     # this field is the object id generated from MongoDB, we dont need it.
     labels = [label for label in db.getLabels() if label not in labelsToRemove]
 
     # Saving into a file just to increase performance while debugging.
     data = panda.DataFrame({label: db.getColumn(label) for label in labels})
+    print("Download complete, treating data now...")
 
     labelsToEval = ['AGE', 'PTEDUCAT', 'APOE4', 'FDG', 'PIB', 'AV45', 'CDRSB', 'ADAS11', 'ADAS13',
                     'ADASQ4', 'MMSE', 'RAVLT_immediate', 'RAVLT_learning', 'RAVLT_forgetting', 'RAVLT_perc_forgetting',
@@ -90,9 +92,11 @@ except:
     
     
     data['PTRACCAT'] = [0 if x == 'White' else 1 for x in data['PTRACCAT']]
+    print("Saving file...")
 
     data.to_pickle(path+'.pickle')
     data.to_csv(path+'.csv')
+    print("Ready!")
 
 print(data['PTRACCAT'].value_counts())
 print(data.head(10))
