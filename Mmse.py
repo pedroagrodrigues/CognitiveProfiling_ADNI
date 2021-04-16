@@ -18,7 +18,7 @@ class Mmse:
         except:
             credentials = json.load(open("credentials.json"))
 
-            db = Database('ADNI', 'ADNIMERGE', credentials['user'], credentials['password'], credentials['server'])
+            db = Database('ADNI', 'MMSE', credentials['user'], credentials['password'], credentials['server'])
 
             # labelsToRemove = ['_id']
             labelsToRemove = ['_id', 'USERDATE', 'USERDATE2', 'update_stamp', 'EXAMDATE', 'MMDATECM',
@@ -32,6 +32,7 @@ class Mmse:
             labels = [label for label in db.getLabels() if label not in labelsToRemove]
 
             data = panda.DataFrame({label: db.getColumn(label) for label in labels})
+            
 
             data['Phase'] = [1 if x == 'ADNI1' else x for x in data['Phase']]
             data['Phase'] = [2 if x == 'ADNI2' else x for x in data['Phase']]
@@ -57,6 +58,8 @@ class Mmse:
 
             data.to_pickle(self.path + '.pickle')
             data.to_csv(self.path + '.csv')
+            data.to_pickle(self.path + '.pickle')
+            data.to_csv(self.path + '.csv')
 
         return data
 
@@ -79,9 +82,8 @@ class Mmse:
 
         return round(total * 100 / 30, 2)
 
-
-x = Mmse()
-
+# Debug:
+# x = Mmse()
 # print(x.data.head(5))
 # data['MMSCORE'] = [calcTotal(row, fieldsToClean) for row in data.loc]
 # print(data.dtypes)

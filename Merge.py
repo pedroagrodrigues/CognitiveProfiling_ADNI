@@ -81,6 +81,8 @@ class Merge:
             data['DX'] = [0 if value == 'CN' else value for value in data['DX']]
             data['DX'] = [1 if value == 'MCI' else value for value in data['DX']]
             data['DX'] = [2 if value == 'Dementia' else value for value in data['DX']]
+            
+            
             # Labels:
             # CN        -> 0
             # LMCI      -> 1
