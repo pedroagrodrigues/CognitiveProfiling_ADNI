@@ -103,6 +103,6 @@ class Moca:
         return round(total * 100 / 30, 2)
 
 
-x = Moca()
+# x = Moca()
 
-print(x.data.head(5))
+# print(x.data.head(5))
