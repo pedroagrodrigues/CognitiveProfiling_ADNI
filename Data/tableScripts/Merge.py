@@ -1,23 +1,23 @@
-# External imports
 import pandas as panda
 import json
 
-# Internal imports
-from Database import Database
+from . import common
+from Data import Database
 
 
 class Merge:
     def __init__(self):
-        self.path = './dataFiles/MERGE'
+        self.path = 'Data/local/MERGE'
         self.data = self.loadData()
         print("Ready!")
 
     def loadData(self):
         try:
             data = panda.read_pickle(self.path+'.pickle')
+            
         except:
             print("No save file found, downloading data...\nThis may take a while.")
-            credentials = json.load(open("credentials.json"))
+            credentials = json.load(open("config/credentials.json"))
 
             db = Database('ADNI', 'ADNIMERGE', credentials['user'], credentials['password'], credentials['server'])
 
@@ -111,6 +111,5 @@ class Merge:
             print("Saving file...")
 
             data.to_pickle(self.path+'.pickle')
-            data.to_csv(self.path+'.csv')
 
         return data

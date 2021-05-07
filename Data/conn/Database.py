@@ -41,7 +41,7 @@ class Database:
 
     def query(self, target, dataFilter=None, distinct=True):
         if distinct:
-            if type(target) != dict and dataFilter == None:
+            if type(target) != dict and dataFilter is None:
                 return self.dbConnect().distinct(target)
             return self.dbConnect().distinct(target, dataFilter)
         return self.dbConnect().find(target, dataFilter)

@@ -1,15 +1,14 @@
-# External imports
-import numpy as np
 import pandas as panda
 import json
 
-# Internal imports
-from Database import Database
+from . import common
+from Data import Database
+
 
 
 class Cdr:
     def __init__(self):
-        self.path = './dataFiles/CDR'
+        self.path = 'data/local/CDR'
         self.data = self.getData()
         print("CDR ready!")
 
@@ -17,7 +16,7 @@ class Cdr:
         try:
             data = panda.read_pickle(self.path + '.pickle')
         except:
-            credentials = json.load(open("credentials.json"))
+            credentials = json.load(open("config/credentials.json"))
 
             db = Database('ADNI', 'CDR', credentials['user'], credentials['password'], credentials['server'])
 
@@ -46,7 +45,6 @@ class Cdr:
                 data.loc[data['ID'] == row, 'CDRSB'] = self.calculateTotals(data.loc[data['ID'] == row])
 
             data.to_pickle(self.path + '.pickle')
-            data.to_csv(self.path + '.csv')
 
         return data
 
@@ -58,12 +56,7 @@ class Cdr:
 
     def calculateTotals(self, data):
         fields = ['CDMEMORY', 'CDORIENT', 'CDJUDGE', 'CDCOMMUN', 'CDHOME', 'CDCARE']
-        total = 0
-
-        for field in fields:
-            total += data[field].values[0]
-
-        return total
+        return sum(data[field].values[0] for field in fields)
 
     def evaluateField(self, data, field):
         data = data.loc[(data[field] != '-1') & (data[field] != '')]

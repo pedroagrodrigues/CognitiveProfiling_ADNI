@@ -1,14 +1,13 @@
-# External imports
 import pandas as panda
 import json
 
-# Internal imports
-from Database import Database
+from . import common
+from Data import Database
 
 
 class Moca:
     def __init__(self):
-        self.path = './dataFiles/MOCA'
+        self.path = 'Data/local/MOCA'
         self.data = self.getData()
         print("Moca ready!")
 
@@ -16,7 +15,7 @@ class Moca:
         try:
             data = panda.read_pickle(self.path + '.pickle')
         except:
-            credentials = json.load(open("credentials.json"))
+            credentials = json.load(open("config/credentials.json"))
 
             db = Database('ADNI', 'MOCA', credentials['user'], credentials['password'], credentials['server'])
 
@@ -76,14 +75,8 @@ class Moca:
                       'CAMEL', 'DIGFOR', 'DIGBACK', 'REPEAT1', 'REPEAT2', 'ABSTRAN', 'ABSMEAS', 'DATE',
                       'MONTH', 'YEAR', 'DAY', 'PLACE', 'CITY']
 
-        total = 0
-        for label in dataLabels:
-            total += row[label].values[0]
-
-        temp = 0
-        for i in range(1, 6):
-            temp += row['SERIAL'+str(i)].values[0]
-
+        total = sum(row[label].values[0] for label in dataLabels)
+        temp = sum(row['SERIAL'+str(i)].values[0] for i in range(1, 6))
         if temp > 0:
             total += 1
         if temp > 1:

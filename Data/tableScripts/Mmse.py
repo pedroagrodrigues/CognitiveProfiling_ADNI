@@ -1,14 +1,13 @@
-# External imports
 import pandas as panda
 import json
 
-# Internal imports
-from Database import Database
+from . import common
+from Data import Database
 
 
 class Mmse:
     def __init__(self):
-        self.path = './dataFiles/MMSE'
+        self.path = 'Data/local/MMSE'
         self.data = self.getData()
         print("MMSE ready!")
 
@@ -16,7 +15,7 @@ class Mmse:
         try:
             data = panda.read_pickle(self.path + '.pickle')
         except:
-            credentials = json.load(open("credentials.json"))
+            credentials = json.load(open("config/credentials.json"))
 
             db = Database('ADNI', 'MMSE', credentials['user'], credentials['password'], credentials['server'])
 
@@ -32,7 +31,7 @@ class Mmse:
             labels = [label for label in db.getLabels() if label not in labelsToRemove]
 
             data = panda.DataFrame({label: db.getColumn(label) for label in labels})
-            
+
 
             data['Phase'] = [1 if x == 'ADNI1' else x for x in data['Phase']]
             data['Phase'] = [2 if x == 'ADNI2' else x for x in data['Phase']]
@@ -57,9 +56,6 @@ class Mmse:
                 data.loc[data['ID'] == row, 'MMSCORE'] = self.calculateTotals(data.loc[data['ID'] == row], fieldsToClean)
 
             data.to_pickle(self.path + '.pickle')
-            data.to_csv(self.path + '.csv')
-            data.to_pickle(self.path + '.pickle')
-            data.to_csv(self.path + '.csv')
 
         return data
 
@@ -76,10 +72,7 @@ class Mmse:
         return data
 
     def calculateTotals(self, row, fields):
-        total = 0
-        for i in fields:
-            total += row[i].values[0]
-
+        total = sum(row[i].values[0] for i in fields)
         return round(total * 100 / 30, 2)
 
 # Debug:
