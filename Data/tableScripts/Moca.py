@@ -53,7 +53,6 @@ class Moca:
                 data.loc[data['ID'] == row, 'MOCA'] = self.calculateTotals(data.loc[data['ID'] == row])
 
             data.to_pickle(self.path + '.pickle')
-            data.to_csv(self.path + '.csv')
 
         return data
 
