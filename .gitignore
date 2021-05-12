@@ -135,3 +135,7 @@ dataset.csv
 dataset.pickle
 .vscode/launch.json
 dataFiles/*
+Data/local/CDR.pickle
+Data/local/MERGE.pickle
+Data/local/MMSE.pickle
+Data/local/MOCA.pickle

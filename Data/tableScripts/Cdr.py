@@ -64,9 +64,3 @@ class Cdr:
 
         return data
 
-
-# x = Cdr()
-
-# print(x.data.head(5))
-# print (data.loc[data['ID'] == 127785])
-# print ('ID: ', eval(data.loc[data['ID'] == 127785, 'CDRSB'].values[0]) == calculateTotals(data.loc[data['ID'] == 127785]))

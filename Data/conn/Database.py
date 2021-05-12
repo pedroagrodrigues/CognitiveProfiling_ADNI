@@ -39,12 +39,22 @@ class Database:
 
     
 
-    def query(self, target, dataFilter=None, distinct=True):
-        if distinct:
-            if type(target) != dict and dataFilter is None:
-                return self.dbConnect().distinct(target)
-            return self.dbConnect().distinct(target, dataFilter)
-        return self.dbConnect().find(target, dataFilter)
+    def query(self, target, dataFilter=None):
+        """[summary]
+        Args:
+            target (Dict, String): if Dict -> {Field: Value, Field: Value...} if String -> Column name
+            dataFilter (String, optional): Filters distinct values of dataFilter. Defaults to None.
 
-
-
+        """
+        print(target)
+        if type(target) == dict:
+            if dataFilter != None:
+                try: 
+                    return self.dbConnect().find(target).distinct(dataFilter)
+                except Exception(e):
+                    print("Something wrong with your query: ", e)
+            return self.dbConnect().find(target)
+        try:
+            return self.dbConnect().find(target[0], target[1])
+        except:
+            print("There is an error in your query: Target type not dict.")
