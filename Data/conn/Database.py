@@ -46,15 +46,31 @@ class Database:
             dataFilter (String, optional): Filters distinct values of dataFilter. Defaults to None.
 
         """
-        print(target)
         if type(target) == dict:
             if dataFilter != None:
                 try: 
                     return self.dbConnect().find(target).distinct(dataFilter)
-                except Exception(e):
-                    print("Something wrong with your query: ", e)
+                except Exception as error:
+                    print("Something wrong with your query: ", error)
             return self.dbConnect().find(target)
         try:
             return self.dbConnect().find(target[0], target[1])
         except:
             print("There is an error in your query: Target type not dict.")
+
+    
+    def insertMany(self, data):
+        """Upload a CSV file to database
+
+        Args:
+            data (Pandas DataFrame): Load data as DataFrame to insert on a collection
+            
+        """
+        try:
+            data.reset_index(inplace=True)
+            data = data.to_dict("records")
+            self.dbConnect().insert_many(data)
+        except Exception as error:
+            print("Something went wrong: " + repr(error))
+
+

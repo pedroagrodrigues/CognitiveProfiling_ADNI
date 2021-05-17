@@ -19,11 +19,13 @@ class Moca:
 
             db = Database('ADNI', 'MOCA', credentials['user'], credentials['password'], credentials['server'])
 
-            labelsToRemove = ['_id', 'VISCODE', 'USERDATE', 'USERDATE2', 'update_stamp']
+            labelsToRemove = ['_id', 'USERDATE', 'USERDATE2', 'update_stamp']
 
             labels = [label for label in db.getLabels() if label not in labelsToRemove]
 
             data = panda.DataFrame({label: db.getColumn(label) for label in labels})
+            
+            # data = data.rename(columns={ "VISCODE2" : "VISCODE" })
 
             data['Phase'] = [1 if x == 'ADNI1' else x for x in data['Phase']]
             data['Phase'] = [2 if x == 'ADNI2' else x for x in data['Phase']]
@@ -35,8 +37,8 @@ class Moca:
             for field in fieldsToInt:
                 data = self.dataToInt(data, field)
 
-            data = data.loc[data['VISCODE2'] != '']
-            data['VISCODE2'] = [int(x.lstrip('m').lstrip('0')) if x != 'bl' else 0 for x in data['VISCODE2']]
+            # data = data.loc[data['VISCODE2'] != '']
+            # data['VISCODE2'] = [int(x.lstrip('m').lstrip('0')) if x != 'bl' else 0 for x in data['VISCODE2']]
 
             fieldsToClean = ['TRAILS', 'CUBE', 'CLOCKCON', 'CLOCKNO', 'CLOCKHAN',
                              'LION', 'RHINO', 'CAMEL', 'IMMT1W1', 'IMMT1W2', 'IMMT1W3', 'IMMT1W4',

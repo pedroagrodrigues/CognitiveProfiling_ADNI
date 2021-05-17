@@ -72,8 +72,8 @@ class Mmse:
         return data
 
     def calculateTotals(self, row, fields):
-        total = sum(row[i].values[0] for i in fields)
-        return round(total * 100 / 30, 2)
+        return sum(row[i].values[0] for i in fields)
+        # return round(total * 100 / 30, 2)
 
 # Debug:
 # x = Mmse()
