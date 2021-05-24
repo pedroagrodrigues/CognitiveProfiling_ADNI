@@ -31,7 +31,7 @@ class Database:
         except Exception as error:
             print("Something went wrong: " + repr(error))
 
-    def getColumn(self, column):
+    def getColumn(self, column: list):
         try: 
             return [row[column] for row in self.dbConnect().find({}, {column:1})]
         except Exception as error:
@@ -39,7 +39,7 @@ class Database:
 
     
 
-    def query(self, target, dataFilter=None):
+    def query(self, target: dict, dataFilter=None):
         """[summary]
         Args:
             target (Dict, String): if Dict -> {Field: Value, Field: Value...} if String -> Column name
