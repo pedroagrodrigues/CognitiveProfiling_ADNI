@@ -1,15 +1,14 @@
-import pandas as pd
-# from common import *
-from .common import *
-
-
+if __name__ == "__main__":
+    from common import *
+else: 
+    from .common import *
 
 class Ecogsp:
     def __init__(self) -> None:
         self.name = "ECOGSP"
-        self.data = self.loadData()
+        self.data = self.prepareData()
 
-    def loadData(self):
+    def prepareData(self) -> pd.DataFrame:
         try:
             return loadFile(self.name)
         except:

@@ -33,11 +33,11 @@ class Mmse:
 
             saveFile(self.data, self.name)
 
-    def fixCodes(self, data: pd.DataFrame) -> pd.DataFrame:
+    def fixCodes(self, data: pd.DataFrame) -> None:
         data.rename(columns={"VISCODE2": "VISCODE"}, inplace=True)
         data["VISCODE"].replace({"sc": "bl"}, inplace=True)
 
-    def calculateTotals(self, data: pd.DataFrame) -> pd.DataFrame:
+    def calculateTotals(self, data: pd.DataFrame) -> None:
         validFields = ['MMDATE', 'MMYEAR', 'MMMONTH', 'MMDAY', 'MMSEASON', 'MMHOSPIT', 'MMFLOOR',
                        'MMCITY', 'MMAREA', 'MMSTATE', 'MMBALL', 'MMFLAG', 'MMTREE', 'MMBALLDL',
                        'MMFLAGDL', 'MMTREEDL', 'MMWATCH', 'MMPENCIL', 'MMREPEAT', 'MMHAND', 'MMFOLD',
