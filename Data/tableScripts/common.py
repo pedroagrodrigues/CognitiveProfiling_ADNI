@@ -30,8 +30,10 @@ def connDatabase(name: str) -> Database:
 def loadFile(name: str) -> pd.DataFrame:
     return pd.read_pickle("Data/local/"+name+".pickle")
 
-def saveFile(data: pd.DataFrame, name: str):
-    data.to_pickle("Data/local/"+name+".pickle")
+def saveFile(data: pd.DataFrame, name: str, csv: bool = False) ->None:
+    if csv:
+        data.to_csv("Data/local/"+name+".csv")
+    else: data.to_pickle("Data/local/"+name+".pickle")
 
 def loadData(name: str, labels: list) -> pd.DataFrame:
     db = connDatabase(name)
@@ -40,3 +42,7 @@ def loadData(name: str, labels: list) -> pd.DataFrame:
 def getLabels(name: str) -> list:
     db = connDatabase(name)
     return [label for label in db.getLabels()]
+
+def insertFileDB(data: pd.DataFrame, name: str) -> None:
+    connDatabase(name).insertMany(data)
+    

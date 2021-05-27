@@ -6,15 +6,23 @@ else:
 class Ecogsp:
     def __init__(self) -> None:
         self.name = "ECOGSP"
-        self.data = self.prepareData()
+        self.dataLoader()
 
-    def prepareData(self) -> pd.DataFrame:
+    def dataLoader(self) -> None:
         try:
-            return loadFile(self.name)
+            self.data = loadFile(self.name)
         except:
             labels = getLabels(self.name)
-            labelsToRemove = ["_id", "index", "PHASE", "ID", "SITEID", "USERDATE", "USERDATE2", "SPID", "update_stamp"]
+            labelsToRemove = ["_id", "index", "VISCODE", "PHASE", "ID", "SITEID", "USERDATE", "USERDATE2", "SPID", "update_stamp"]
             labels = [label for label in labels if label not in labelsToRemove]
             data = loadData(self.name, labels)
-            saveFile(data, self.name)
-            return data
+            self.fixCodes(data)
+            self.data = data.dropna()
+
+
+    def fixCodes(self, data: pd.DataFrame) -> None:
+        data.rename(columns={ "VISCODE2" : "VISCODE" }, inplace=True)
+    
+    def calculateTotals(self, data: pd.DataFrame) -> None:
+        pass
+        

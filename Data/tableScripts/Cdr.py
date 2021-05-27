@@ -1,66 +1,41 @@
-import pandas as panda
-import json
 
-from . import common
-from Data import Database
+if __name__ == "__main__":
+    from common import *
+else:
+    from .common import *
 
 
 
 class Cdr:
     def __init__(self):
-        self.path = 'data/local/CDR'
-        self.data = self.getData()
+        self.name = 'CDR'
+        self.dataLoader()
         print("CDR ready!")
 
-    def getData(self):
+    def dataLoader(self):
         try:
-            data = panda.read_pickle(self.path + '.pickle')
+            self.data = loadFile(self.name)
         except:
-            credentials = json.load(open("config/credentials.json"))
+            labels = getLabels(self.name)
+            labelsToRemove = ['_id', 'Phase', 'VISCODE', 'USERDATE', 'USERDATE2', 'EXAMDATE', 'CDVERSION', 'CDSOB', 'update_stamp']
+            labels = [label for label in labels if label not in labelsToRemove]
+            data = loadData(self.name, labels)
+            self.fixCodes(data)
+            self.dataToNumeric(data)
+            self.calculateTotals(data)
+            saveFile(self.data, self.name)
 
-            db = Database('ADNI', 'CDR', credentials['user'], credentials['password'], credentials['server'])
+    def fixCodes(self, data: pd.DataFrame) -> None:
+        data.rename(columns={"VISCODE2": "VISCODE"}, inplace=True)
+        data["VISCODE"].replace({"sc": "bl"}, inplace=True)
 
-            labelsToRemove = ['_id', 'USERDATE', 'USERDATE2', 'EXAMDATE', 'CDVERSION', 'CDSOB', 'update_stamp']
+    def dataToNumeric(self, data: pd.DataFrame) -> None:
+        fields = ['ID', 'RID', 'SITEID', 'CDSOURCE', 'CDMEMORY', 'CDORIENT', 'CDJUDGE', 'CDCOMMUN', 'CDHOME', 'CDCARE', 'CDGLOBAL']
+        for field in fields:
+            data[field] = pd.to_numeric(data[field])
 
-            labels = [label for label in db.getLabels() if label not in labelsToRemove]
-
-            data = panda.DataFrame({label: db.getColumn(label) for label in labels})
-
-            data['Phase'] = [1 if x == 'ADNI1' else x for x in data['Phase']]
-            data['Phase'] = [2 if x == 'ADNI2' else x for x in data['Phase']]
-            data['Phase'] = [3 if x == 'ADNI3' else x for x in data['Phase']]
-            data['Phase'] = [4 if x == 'ADNIGO' else x for x in data['Phase']]
-
-            fieldsToInt = ['ID', 'RID', 'SITEID', 'CDSOURCE']
-
-            for field in fieldsToInt:
-                data = self.dataToInt(data, field)
-
-            fieldsToEvaluate = ['CDMEMORY', 'CDORIENT', 'CDJUDGE', 'CDCOMMUN', 'CDHOME', 'CDCARE', 'CDGLOBAL']
-
-            for field in fieldsToEvaluate:
-                data = self.evaluateField(data, field)
-
-            for row in data['ID']:
-                data.loc[data['ID'] == row, 'CDRSB'] = self.calculateTotals(data.loc[data['ID'] == row])
-
-            data.to_pickle(self.path + '.pickle')
-
-        return data
-
-    def dataToInt(self, data, field):
-        data = data.loc[(data[field] != '-1') & (data[field] != '')]
-        data[field] = [int(x) for x in data[field]]
-
-        return data
-
-    def calculateTotals(self, data):
+    def calculateTotals(self, data: pd.DataFrame) -> None:
         fields = ['CDMEMORY', 'CDORIENT', 'CDJUDGE', 'CDCOMMUN', 'CDHOME', 'CDCARE']
-        return sum(data[field].values[0] for field in fields)
-
-    def evaluateField(self, data, field):
-        data = data.loc[(data[field] != '-1') & (data[field] != '')]
-        data[field] = [eval(x) for x in data[field]]
-
-        return data
+        data["CDRSB"] = data[fields].sum(axis=1)
+        self.data = data.dropna()
 

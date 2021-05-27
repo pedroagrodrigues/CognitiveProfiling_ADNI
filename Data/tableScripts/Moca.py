@@ -6,7 +6,6 @@ else:
 
 class Moca:
     def __init__(self):
-        self.path = 'Data/local/MOCA'
         self.name = "MOCA"
         self.dataLoader()
         print("Moca ready!")

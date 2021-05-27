@@ -11,7 +11,7 @@ class Mmse:
         self.dataLoader()
         print("MMSE ready!")
 
-    def dataLoader(self) -> pd.DataFrame:
+    def dataLoader(self) -> None:
         try:
             self.data = loadFile(self.name)
         except:
