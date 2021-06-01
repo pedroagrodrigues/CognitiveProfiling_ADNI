@@ -10,8 +10,7 @@ class Adas:
         self.name = "ADAS"
         self.files = ["ADAS1TOTAL", "ADASGO23"]
         self.dataLoader()
-        saveFile(self.data, self.name, True)
-
+        
     def dataLoader(self) -> pd.DataFrame:
         try:
             self.data = loadFile(self.name)
