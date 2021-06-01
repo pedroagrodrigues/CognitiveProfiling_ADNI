@@ -17,7 +17,9 @@ class Ecogsp:
             labels = [label for label in labels if label not in labelsToRemove]
             data = loadData(self.name, labels)
             self.fixCodes(data)
-            self.data = data.dropna()
+            self.data = data
+            # self.data = data.dropna()
+            saveFile(self.data, self.name)
 
 
     def fixCodes(self, data: pd.DataFrame) -> None:
@@ -26,3 +28,4 @@ class Ecogsp:
     def calculateTotals(self, data: pd.DataFrame) -> None:
         pass
         
+# print(Ecogsp().data.head())

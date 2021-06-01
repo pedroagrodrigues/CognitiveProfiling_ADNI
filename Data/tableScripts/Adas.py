@@ -85,4 +85,4 @@ class Adas:
         data["ADAS13"] = data[ADAS13].sum(axis=1)
 
 
-Adas()
+# print(Adas().data.head())

@@ -1,7 +1,11 @@
 import pandas as panda
 import json
 
-from . import common
+
+if __name__ == "__main__":
+    from common import *
+else:
+    from .common import *
 from Data import Database
 
 
@@ -113,3 +117,5 @@ class Merge:
             data.to_pickle(self.path+'.pickle')
 
         return data
+
+# print(Merge().data.head())
