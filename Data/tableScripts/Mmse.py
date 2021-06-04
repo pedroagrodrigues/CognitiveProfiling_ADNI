@@ -7,16 +7,12 @@ else:
 class Mmse:
     def __init__(self) -> None:
         self.name = "MMSE"
-        self.path = 'Data/local/MMSE'
         self.dataLoader()
-        print("MMSE ready!")
 
     def dataLoader(self) -> None:
         try:
             self.data = loadFile(self.name)
         except:
-
-            labels = getLabels(self.name)
             labelsToRemove = ['_id', 'VISCODE', 'USERDATE', 'USERDATE2', 'update_stamp', 'EXAMDATE', 'MMDATECM',
                               'MMYEARCM', 'MMMNTHCM', 'MMDAYCM', 'MMSESNCM', 'MMRECALL', 'MMTRIALS', 'MMHOSPCM', 'MMFLRCM',
                               'MMCITYCM', 'MMAREACM', 'MMSTCM', 'MMTRIALS', 'MMDLTR', 'MMLLTR', 'MMRLTR',
@@ -25,7 +21,8 @@ class Mmse:
                               'MMLTR6', 'MMLTR7', 'WORD1', 'WORD1DL', 'WORD2', 'WORD2DL', 'WORD3', 'WORD3DL',
                               'WORDLIST', 'WORLDSCORE', 'update_stamp']
 
-            labels = [label for label in labels if label not in labelsToRemove]
+            labels = [label for label in getLabels(self.name) if label not in labelsToRemove]
+
 
             data = loadData(self.name, labels)
             self.fixCodes(data)
@@ -48,5 +45,6 @@ class Mmse:
             data.loc[data[field] != '1', field] = 0
             data[field] = pd.to_numeric(data[field])
 
-        data["MMSCORE"] = data[validFields].sum(axis=1)
+        # data["MMSCORE"] = data[validFields].sum(axis=1)
+        data["RID"] = pd.to_numeric(data["RID"])
         self.data = data

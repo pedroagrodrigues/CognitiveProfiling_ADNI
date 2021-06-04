@@ -8,7 +8,6 @@ class Moca:
     def __init__(self):
         self.name = "MOCA"
         self.dataLoader()
-        print("Moca ready!")
 
     def dataLoader(self):
         try:
@@ -42,7 +41,7 @@ class Moca:
                       'CAMEL', 'DIGFOR', 'DIGBACK', 'REPEAT1', 'REPEAT2', 'ABSTRAN', 'ABSMEAS', 'DATE',
                       'MONTH', 'YEAR', 'DAY', 'PLACE', 'CITY']
         data["MOCA"] = data[validFields].sum(axis=1)
-
+        educ = self.getEduc()
         for index, row in data.iterrows():
             temp = sum(row['SERIAL'+str(i)] for i in range(1, 6))
 
@@ -60,8 +59,18 @@ class Moca:
                 specialFieldsTotal += 1
             if row["FFLUENCY"] > 10:
                 specialFieldsTotal += 1
+
+            try:
+                if int(educ.loc[(educ["RID"] == row['RID']) & (educ["VISCODE"] == row["VISCODE"])]["PTEDUCAT"]) < 13:
+                    specialFieldsTotal += 1
+            except:
+                continue
+
             data.loc[index, "MOCA"] += specialFieldsTotal
-            
+
+        data["RID"] = pd.to_numeric(data["RID"])
         self.data = data.dropna()
 
-
+    def getEduc(self) -> pd.DataFrame:
+        labels = ['RID', 'VISCODE', 'PTEDUCAT']
+        return loadData("ADNIMERGE", labels)

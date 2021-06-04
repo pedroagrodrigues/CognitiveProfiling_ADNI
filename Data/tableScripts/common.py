@@ -11,16 +11,6 @@ import numpy as np
 import json
 from Data import Database
 
-def saveToFile(data: pd.DataFrame, name: str):
-    """[Save a File to a given Name]
-
-    Args:
-        data (pandas DataFrame): The data to be saved
-        name (string): The name of the file to be saved
-    """
-    path = f"Data/local/{name}.pickle"
-    data.to_pickle(path)
-
 
 def connDatabase(name: str) -> Database:
     credentials = json.load(open("config/credentials.json"))

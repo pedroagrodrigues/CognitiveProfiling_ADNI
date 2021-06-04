@@ -10,7 +10,6 @@ class Cdr:
     def __init__(self):
         self.name = 'CDR'
         self.dataLoader()
-        print("CDR ready!")
 
     def dataLoader(self):
         try:
@@ -30,12 +29,12 @@ class Cdr:
         data["VISCODE"].replace({"sc": "bl"}, inplace=True)
 
     def dataToNumeric(self, data: pd.DataFrame) -> None:
-        fields = ['ID', 'RID', 'SITEID', 'CDSOURCE', 'CDMEMORY', 'CDORIENT', 'CDJUDGE', 'CDCOMMUN', 'CDHOME', 'CDCARE', 'CDGLOBAL']
+        fields = ['RID', 'CDSOURCE', 'CDMEMORY', 'CDORIENT', 'CDJUDGE', 'CDCOMMUN', 'CDHOME', 'CDCARE', 'CDGLOBAL']
         for field in fields:
             data[field] = pd.to_numeric(data[field])
 
     def calculateTotals(self, data: pd.DataFrame) -> None:
         fields = ['CDMEMORY', 'CDORIENT', 'CDJUDGE', 'CDCOMMUN', 'CDHOME', 'CDCARE']
         data["CDRSB"] = data[fields].sum(axis=1)
+        data["RID"] = pd.to_numeric(data["RID"])
         self.data = data.dropna()
-

@@ -27,7 +27,7 @@ class Merge:
 
             # labelsToRemove = ['_id', 'FSVERSION', 'FSVERSION_bl', 'EXAMDATE', 'EXAMDATE_bl', 'update_stamp']
 
-            labelsToRemove = ['_id', 'EXAMDATE', 'RID', 'PTID', 'SITE', 'COLPROT', 'ORIGPROT', 'PTETHCAT', 'PTRACCAT',
+            labelsToRemove = ['_id', 'EXAMDATE', 'PTID', 'SITE', 'COLPROT', 'ORIGPROT', 'PTETHCAT', 'PTRACCAT',
                               'PTMARRY', 'APOE4', 'FDG', 'PIB', 'AV45', 'ABETA', 'TAU', 'PTAU', 'FLDSTRENG',
                               'FSVERSION', 'IMAGEUID', 'Ventricles', 'Hippocampus', 'WholeBrain', 'Entorhinal',
                               'Fusiform', 'MidTemp', 'ICV', 'EXAMDATE_bl', 'CDRSB_bl', 'ADAS11_bl', 'ADAS13_bl',

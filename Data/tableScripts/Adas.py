@@ -17,6 +17,7 @@ class Adas:
         except:
             self.Adni1()
             self.Adnigo23()
+            self.data["RID"] = pd.to_numeric(self.data["RID"])
             saveFile(self.data, self.name)
 
     def Adni1(self) -> None:
