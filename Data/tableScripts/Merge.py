@@ -13,14 +13,12 @@ class Merge:
     def __init__(self):
         self.path = 'Data/local/MERGE'
         self.data = self.loadData()
-        print("Ready!")
 
     def loadData(self):
         try:
             data = panda.read_pickle(self.path+'.pickle')
             
         except:
-            print("No save file found, downloading data...\nThis may take a while.")
             credentials = json.load(open("config/credentials.json"))
 
             db = Database('ADNI', 'ADNIMERGE', credentials['user'], credentials['password'], credentials['server'])
@@ -46,7 +44,6 @@ class Merge:
 
             # Saving into a file just to increase performance while debugging.
             data = panda.DataFrame({label: db.getColumn(label) for label in labels})
-            print("Download complete, treating data now...")
 
             labelsToEval = ['AGE', 'CDRSB', 'ADAS11', 'ADAS13', 'ADASQ4', 'MMSE', 'RAVLT_immediate', 'RAVLT_learning', 'RAVLT_forgetting', 'RAVLT_perc_forgetting',
                             'LDELTOTAL', 'DIGITSCOR', 'TRABSCOR', 'FAQ', 'MOCA', 'EcogPtMem', 'EcogPtLang', 'EcogPtVisspat',
@@ -112,10 +109,7 @@ class Merge:
             # data['PTMARRY'] = [4 if x == 'Never married' else x for x in data['PTMARRY']]
 
             # data['PTRACCAT'] = [0 if x == 'White' else 1 for x in data['PTRACCAT']]
-            print("Saving file...")
 
             data.to_pickle(self.path+'.pickle')
 
         return data
-
-# print(Merge().data.head())

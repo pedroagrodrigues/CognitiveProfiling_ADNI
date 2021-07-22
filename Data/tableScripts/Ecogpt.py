@@ -13,7 +13,7 @@ class Ecogpt:
         try:
             self.data = loadFile(self.name)
         except:
-            labelsToRemove = ['_id', 'Index', 'Phase', 'ID',
+            labelsToRemove = ['_id', 'index', 'Phase', 'ID',
                               'SITEID', 'VISCODE', 'USERDATE', 'USERDATE2', 'update_stamp']
             labels = [label for label in getLabels(self.name) if label not in labelsToRemove]
             data = loadData(self.name, labels)

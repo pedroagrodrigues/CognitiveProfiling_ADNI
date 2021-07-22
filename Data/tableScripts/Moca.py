@@ -14,13 +14,15 @@ class Moca:
             self.data = loadFile(self.name)
         except:
             labels = getLabels(self.name)
-            labelsToRemove = ['_id', 'Phase', "VISCODE", 'USERDATE', 'USERDATE2', 'update_stamp']
+            labelsToRemove = ['_id', 'ID', 'SITEID', 'Phase', "VISCODE", 'USERDATE', 'USERDATE2', 'update_stamp']
             labels = [label for label in labels if label not in labelsToRemove]
             data = loadData(self.name, labels)
-            data.rename(columns={ "VISCODE2" : "VISCODE" }, inplace=True)
+            data = self.fixCodes(data)
             self.dataToInt(data)
             self.calculateTotals(data)
-            saveFile(self.data, self.name)
+            saveFile(data, self.name)
+
+    
 
     def dataToInt(self, data: pd.DataFrame) -> None:
         fields = ['TRAILS', 'CUBE', 'CLOCKCON', 'CLOCKNO', 'CLOCKHAN',
@@ -60,6 +62,7 @@ class Moca:
             if row["FFLUENCY"] > 10:
                 specialFieldsTotal += 1
 
+            "This is only to check the patient age, sometimes we don't have this information and the try and catch is a workarround. There's a space for improvement using the file Neurobat.py"
             try:
                 if int(educ.loc[(educ["RID"] == row['RID']) & (educ["VISCODE"] == row["VISCODE"])]["PTEDUCAT"]) < 13:
                     specialFieldsTotal += 1
@@ -74,3 +77,13 @@ class Moca:
     def getEduc(self) -> pd.DataFrame:
         labels = ['RID', 'VISCODE', 'PTEDUCAT']
         return loadData("ADNIMERGE", labels)
+
+    def fixCodes(self, data: pd.DataFrame) -> pd.DataFrame:
+        data.rename(columns={ "VISCODE2" : "VISCODE" }, inplace=True)
+        data = data.drop(data[data.VISCODE == ''].index)
+        data = data.drop_duplicates(subset=["RID", "VISCODE"], keep=False)
+        # # Some columns have a wierd behaviour. 
+        # codes = ['bl', 'm06', 'm12', 'm24', 'm36', 'm48', 'm60', 'm72', 'm84', 'm96', 'm108', 'm120', 'm132', 'm144', 'm156', 'm168', 'm180']
+        # tooBig = [codes[i] for i in range(1, len(codes[1:])) if len(data.loc[data["VISCODE"] == codes[i]]) > len(data.loc[data["VISCODE"] == codes[i - 1]])]
+        return data
+

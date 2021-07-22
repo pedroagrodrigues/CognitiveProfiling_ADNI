@@ -8,5 +8,6 @@ from .tableScripts.Adas import Adas
 from .tableScripts.Faq import Faq
 from .tableScripts.Nuerobat import Neurobat
 from .tableScripts.Ecogpt import Ecogpt
+from .tableScripts.Demog import Demog
 from .tableScripts.JoinedData import JoinedData
 
