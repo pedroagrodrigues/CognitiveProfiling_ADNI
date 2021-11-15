@@ -1,3 +1,15 @@
+# Main Comments
+Every script inside the folder **tableScripts**, with the exception of **common.py**, referes to a file in the database. These files save the output in a file inside the folder Data/local. This makes the script run faster after the first execution.
+
+The file **common.py** has some functions that are frequently used.
+
+The connection to the database is done using the file **Database.py** inside the folder **conn**
+
+
+
+
+
+
 # CognitiveProfiling_ADNI
 This repository will contain the code developed for profiling patients from Alzheimer's Disease Big Data DREAM Challenge #1. 
 
