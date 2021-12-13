@@ -38,3 +38,4 @@ class Cdr:
         data["CDRSB"] = data[fields].sum(axis=1)
         data["RID"] = pd.to_numeric(data["RID"])
         self.data = data.dropna()
+
