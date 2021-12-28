@@ -17,7 +17,7 @@ class Database:
 
     def getLabels(self):
         collection = self.dbConnect()
-        return [label for label in collection.find_one()] 
+        return list(collection.find_one()) 
 
     def getUnlabelledData(self):
         try:
