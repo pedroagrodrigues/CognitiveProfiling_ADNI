@@ -120,11 +120,14 @@ except:
 
 
 def distance(a, b):
-    return math.sqrt(a**2 + b**2)
+    return math.sqrt((a - b)**2)
 
+def distance(a: pd.DataFrame, b: pd.DataFrame, cols: list) -> float:
+    # Using Euclidean Distance sqrt((a-b)**2)
+    return float(np.linalg.norm(a[cols].values - b[cols].values, axis=1))
 
 # Filling function
-def fillNanVals(goodData: pd.DataFrame, dataToFill: pd.DataFrame, k: int, index: int) -> list:
+def fillNanVals(completeDataset: pd.DataFrame, dataToFill: pd.DataFrame, k: int, index: int) -> list:
     """Searches the mean from the k nearest evaluations
 
     Args:
@@ -137,24 +140,27 @@ def fillNanVals(goodData: pd.DataFrame, dataToFill: pd.DataFrame, k: int, index:
         list: row with data filled
 
     """
-    currentRow = pd.DataFrame(dataToFill.iloc[index]).T
+    currentRow = dataToFill.iloc[[index]]
 
-    labels = [x for x in list(currentRow) if currentRow[x].isna().all()]
+    labelsToFill = [x for x in list(currentRow) if currentRow[x].isna().all()]
 
-    if not labels:
+    if not labelsToFill:
         return currentRow
 
-    data = pd.DataFrame(goodData[x].apply(lambda y: distance(y, currentRow[x]))
-                        if x not in labels else goodData[x] for x in currentRow.columns).T
-    data["TOTALS"] = data.drop(labels, axis=1).sum(axis=1)
+    distanceLabels = [label for label in currentRow.columns if label not in labelsToFill]
+    
+    data = pd.DataFrame()
+    data['TOTALS'] = completeDataset.drop(labelsToFill, axis=1).apply(lambda y: distance(y, currentRow, distanceLabels), axis=1)
+    for label in labelsToFill:
+        data[label] = completeDataset[label]
     data = data.sort_values(by=["TOTALS"])[:k]
 
-    result = data[labels].mean()
+    result = data[labelsToFill].mean()
 
-    for label in labels:
+    for label in labelsToFill:
         currentRow[label] = result[label]
 
     return currentRow
 
 
-# Calc(2)
+Calc(20)
