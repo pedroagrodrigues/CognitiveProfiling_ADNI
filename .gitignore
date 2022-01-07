@@ -136,3 +136,4 @@ dataset.pickle
 .vscode/launch.json
 dataFiles/*
 Data/local/*
+Data/.DS_Store

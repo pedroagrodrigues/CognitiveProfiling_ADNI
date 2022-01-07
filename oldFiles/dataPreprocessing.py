@@ -4,6 +4,7 @@ from sklearn.preprocessing import scale
 from statsmodels.nonparametric.kde import KDEUnivariate
 
 import json
+
 # Load data from database:
 from Database import Database
 

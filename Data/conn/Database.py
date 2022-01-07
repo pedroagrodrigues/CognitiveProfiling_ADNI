@@ -40,7 +40,7 @@ class Database:
     
 
     def query(self, target: dict, dataFilter=None):
-        """[summary]
+        """ Makes a query to the database
         Args:
             target (Dict, String): if Dict -> {Field: Value, Field: Value...} if String -> Column name
             dataFilter (String, optional): Filters distinct values of dataFilter. Defaults to None.
@@ -72,5 +72,3 @@ class Database:
             self.dbConnect().insert_many(data)
         except Exception as error:
             print("Something went wrong: " + repr(error))
-
-
