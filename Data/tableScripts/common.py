@@ -79,7 +79,7 @@ def getLabels(name: str) -> list:
         list: list of labels
     """
     db = connDatabase(name)
-    return [label for label in db.getLabels()]
+    return list(db.getLabels())
 
 def insertFileDB(data: pd.DataFrame, name: str) -> None:
     """Saves a new table to the database

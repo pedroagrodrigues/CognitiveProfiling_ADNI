@@ -113,7 +113,7 @@ The field LETTERS represents the number of errors on the given task.
 
 ### MMSE - Mini–Mental State Examination
 
-According to [wikipedia](https://en.wikipedia.org/wiki/Mini%E2%80%93Mental_State_Examination)
+According to [Oxford Medical Education](https://oxfordmedicaleducation.com/geriatrics/mini-mental-state-examination-mmse/)
 MMSE is a 30-point test that is used extensively in clinical research settings to measure cognitive impairment. It is commonly used in medicine and allied health to screen for dementia. It is also used to estimate the severity and progression of cognitive impairment and to follow the course of cognitive changes in an individual over time; thus making it an effective way to document an individual's response to treatment. The MMSE's purpose has been not, on its own, to provide a diagnosis for any particular nosological entity.
 
 The dataset for this assessment has 74 columns with a total of 12163 rows.
