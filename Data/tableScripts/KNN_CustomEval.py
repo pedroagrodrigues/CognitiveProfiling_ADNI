@@ -130,8 +130,10 @@ def distance(a: pd.DataFrame, b: pd.DataFrame, cols: list) -> float:
 # Function for incomplete fitting
 def incompleteFitting(completeDataset: pd.DataFrame, incompleteData: pd.DataFrame, k: int, missingColumns: int) -> list:
     frequent = []
+    
     # Drops rows with a number of nulls higher than missingColumns
     currentData = incompleteData.dropna(thresh=incompleteData.shape[1]-missingColumns, axis=0)
+
     for i in range(len(currentData)):
         currentRow = currentData.iloc[[i]]  # Gets the row of index i
 

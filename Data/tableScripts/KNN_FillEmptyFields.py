@@ -95,8 +95,7 @@ class Calc:
 
 
 # Loading Data
-cleanData = common.loadFile("CleanedData").drop(
-    ['RID', 'VISCODE', 'PTEDUCAT', 'PTGENDER', 'AGE'], axis=1)  # Dropping fields not used
+cleanData = common.loadFile("CleanedData").drop(['RID', 'VISCODE'], axis=1)  # Dropping fields not used
 allData = JoinedData().data.drop_duplicates()
 
 # Preparing DataSets
@@ -115,7 +114,7 @@ cleanData = cleanData.astype("float")
 try:
     filledData = common.loadFile("filledData")
 except:
-    filledData = pd.DataFrame(np.nan, index=range(len(list(allData.index))), columns=allData.columns.to_list())
+    filledData = pd.DataFrame(np.nan, index=range(len(list(allData.index))), columns= allData.columns.to_list() + ["numFilledLabels"])
     common.saveFile(filledData, "filledData")
 
 
@@ -143,11 +142,12 @@ def fillNanVals(completeDataset: pd.DataFrame, dataToFill: pd.DataFrame, k: int,
     currentRow = dataToFill.iloc[[index]]
 
     labelsToFill = [x for x in list(currentRow) if currentRow[x].isna().all()]
+    currentRow.insert(len(currentRow.columns), "numFilledLabels", len(labelsToFill), True)
 
     if not labelsToFill:
         return currentRow
 
-    distanceLabels = [label for label in currentRow.columns if label not in labelsToFill]
+    distanceLabels = [label for label in currentRow.columns if label not in labelsToFill and label != "numFilledLabels"]
     
     data = pd.DataFrame()
     data['TOTALS'] = completeDataset.drop(labelsToFill, axis=1).apply(lambda y: distance(y, currentRow, distanceLabels), axis=1)
@@ -159,6 +159,7 @@ def fillNanVals(completeDataset: pd.DataFrame, dataToFill: pd.DataFrame, k: int,
 
     for label in labelsToFill:
         currentRow[label] = result[label]
+
 
     return currentRow
 
